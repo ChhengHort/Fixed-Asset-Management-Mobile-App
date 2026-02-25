@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../auth/presentation/controllers/auth_controller.dart';
 
 class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   final int notificationCount;
@@ -84,9 +87,23 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
                 ],
               ),
               const SizedBox(width: 4),
-              // Avatar
-              GestureDetector(
-                onTap: onProfileTap,
+              // Avatar with dropdown menu (logout)
+              PopupMenuButton<String>(
+                onSelected: (val) async {
+                  if (val == 'logout') {
+                    final controller = context.read<AuthController>();
+                    await controller.logout();
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      AppConstants.loginRoute,
+                      (r) => false,
+                    );
+                  }
+                },
+                color: Colors.white,
+                itemBuilder: (_) => const [
+                  PopupMenuItem(value: 'logout', child: Text('Logout')),
+                ],
                 child: Container(
                   width: 38,
                   height: 38,

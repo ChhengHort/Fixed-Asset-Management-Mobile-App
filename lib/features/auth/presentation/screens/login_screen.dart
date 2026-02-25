@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
 
     if (success && mounted) {
-      Navigator.pushReplacementNamed(context, AppConstants.dashboardRoute);
+      Navigator.pushReplacementNamed(context, AppConstants.assetsRoute);
     }
   }
 
@@ -127,13 +127,13 @@ class _LoginScreenState extends State<LoginScreen>
                             _buildLogo(),
                             const SizedBox(height: 48),
 
-                            // Username field
+                            // Username or Email field
                             AuthTextField(
                               controller: _usernameController,
-                              hint: 'Username',
+                              hint: 'Username or email',
                               icon: Icons.person_outline,
                               validator: (v) => v == null || v.isEmpty
-                                  ? 'Username is required'
+                                  ? 'Username or email is required'
                                   : null,
                             ),
                             const SizedBox(height: 20),

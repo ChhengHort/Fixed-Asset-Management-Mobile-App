@@ -25,8 +25,38 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
     bool rememberLogin = false,
   }) async {
+    // Allow a local mock login for demo credentials before attempting network.
+    const mockUsername = 'manager';
+    const mockEmail = 'manager@example.com';
+    const mockPassword = 'Manager#123';
+
+    if ((username == mockUsername || username == mockEmail) &&
+        password == mockPassword) {
+      try {
+        final userModel = UserModel(
+          id: '1',
+          username: mockUsername,
+          email: mockEmail,
+          fullName: 'Manager',
+          role: 'admin',
+        );
+        await localDataSource.saveToken('mock-token-123');
+        await localDataSource.saveUser(userModel);
+        if (rememberLogin) {
+          await localDataSource.setRememberLogin(true);
+        }
+        return Right(userModel);
+      } catch (e) {
+        return Left(CacheFailure(e.toString()));
+      }
+    }
+
     if (!await networkInfo.isConnected) {
-      return const Left(NetworkFailure('No internet connection. Please check your network settings.'));
+      return const Left(
+        NetworkFailure(
+          'No internet connection. Please check your network settings.',
+        ),
+      );
     }
 
     try {

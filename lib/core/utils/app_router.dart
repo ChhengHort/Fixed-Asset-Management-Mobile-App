@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../injection_container.dart';
+import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../constants/app_constants.dart';
 import '../../features/auth/presentation/controllers/auth_controller.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
@@ -33,33 +34,67 @@ class AppRouter {
       case AppConstants.dashboardRoute:
         return _slideRoute(
           settings,
-          MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (_) => sl<AuthController>()),
-              ChangeNotifierProvider(create: (_) => sl<DashboardController>()),
-            ],
-            child: const DashboardScreen(),
+          FutureBuilder<bool>(
+            future: sl<AuthRepository>().isLoggedIn(),
+            builder: (ctx, snap) {
+              if (snap.connectionState != ConnectionState.done) {
+                return const Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
+                );
+              }
+              if (snap.data == true) {
+                return MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(create: (_) => sl<AuthController>()),
+                    ChangeNotifierProvider(
+                      create: (_) => sl<DashboardController>(),
+                    ),
+                  ],
+                  child: const DashboardScreen(),
+                );
+              }
+              return ChangeNotifierProvider(
+                create: (_) => sl<AuthController>(),
+                child: const LoginScreen(),
+              );
+            },
           ),
         );
 
       case AppConstants.assetsRoute:
         return _slideRoute(
           settings,
-          MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (_) => sl<AuthController>()),
-              ChangeNotifierProvider(create: (_) => sl<FixedAssetController>()),
-            ],
-            child: const FixedAssetScreen(),
+          FutureBuilder<bool>(
+            future: sl<AuthRepository>().isLoggedIn(),
+            builder: (ctx, snap) {
+              if (snap.connectionState != ConnectionState.done) {
+                return const Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
+                );
+              }
+              if (snap.data == true) {
+                return MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(create: (_) => sl<AuthController>()),
+                    ChangeNotifierProvider(
+                      create: (_) => sl<FixedAssetController>(),
+                    ),
+                  ],
+                  child: const FixedAssetScreen(),
+                );
+              }
+              return ChangeNotifierProvider(
+                create: (_) => sl<AuthController>(),
+                child: const LoginScreen(),
+              );
+            },
           ),
         );
 
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
-            body: Center(
-              child: Text('No route defined for ${settings.name}'),
-            ),
+            body: Center(child: Text('No route defined for ${settings.name}')),
           ),
         );
     }
