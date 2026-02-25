@@ -18,23 +18,20 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: AppTheme.primaryGradient,
-      ),
+      decoration: const BoxDecoration(gradient: AppTheme.primaryGradient),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
             children: [
-              Container(
+              SizedBox(
                 width: 36,
                 height: 36,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Center(
-                  child: Icon(Icons.diamond_outlined, color: Colors.white, size: 20),
+                child: Center(
+                  child: Image.asset(
+                    "../assets/images/logos2.png",
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
@@ -53,15 +50,22 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
                 children: [
                   IconButton(
                     onPressed: onNotificationTap,
-                    icon: const Icon(Icons.notifications, color: Colors.white),
+                    icon: const Icon(
+                      Icons.notifications,
+                      color: Colors.white,
+                      size: 40,
+                    ),
                   ),
                   if (notificationCount > 0)
                     Positioned(
-                      right: 6,
-                      top: 6,
+                      right: 8,
+                      top: 8,
                       child: Container(
                         padding: const EdgeInsets.all(3),
-                        constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+                        constraints: const BoxConstraints(
+                          minWidth: 18,
+                          minHeight: 18,
+                        ),
                         decoration: const BoxDecoration(
                           color: Colors.amber,
                           shape: BoxShape.circle,
@@ -95,7 +99,11 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
                         ? Image.network(avatarUrl!, fit: BoxFit.cover)
                         : Container(
                             color: Colors.white.withOpacity(0.3),
-                            child: const Icon(Icons.person, color: Colors.white, size: 20),
+                            child: const Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 20,
+                            ),
                           ),
                   ),
                 ),

@@ -165,7 +165,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(),
     );
   }
 
@@ -230,35 +229,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             },
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildBottomNavBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [BoxShadow(color: Colors.black, blurRadius: 12)],
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _NavItem(icon: Icons.home, label: 'Home', isSelected: true),
-              _NavItem(
-                icon: Icons.inventory_2_outlined,
-                label: 'Assets',
-                onTap: () {
-                  Navigator.pushNamed(context, AppConstants.assetsRoute);
-                },
-              ),
-              _NavItem(icon: Icons.bar_chart, label: 'Reports'),
-              _NavItem(icon: Icons.person_outline, label: 'Profile'),
-            ],
-          ),
-        ),
       ),
     );
   }

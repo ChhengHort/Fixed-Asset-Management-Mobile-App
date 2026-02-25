@@ -50,22 +50,16 @@ class FixedAssetController extends ChangeNotifier {
 
   // ── Init ─────────────────────────────────────────────────────────────────
   Future<void> init() async {
-    await Future.wait([
-      loadAssets(reset: true),
-      loadStatusCounts(),
-    ]);
+    await Future.wait([loadAssets(reset: true), loadStatusCounts()]);
   }
 
   // ── Load status counts ───────────────────────────────────────────────────
   Future<void> loadStatusCounts() async {
     final result = await getStatusCountsUseCase(const NoParams());
-    result.fold(
-      (_) {},
-      (counts) {
-        _statusCounts = counts;
-        notifyListeners();
-      },
-    );
+    result.fold((_) {}, (counts) {
+      _statusCounts = counts;
+      notifyListeners();
+    });
   }
 
   // ── Load assets ──────────────────────────────────────────────────────────
@@ -81,12 +75,14 @@ class FixedAssetController extends ChangeNotifier {
       notifyListeners();
     }
 
-    final result = await getAssetsUseCase(GetAssetsParams(
-      page: _currentPage,
-      perPage: _perPage,
-      status: _selectedStatus == AssetStatus.all ? null : _selectedStatus,
-      searchQuery: _searchQuery.isEmpty ? null : _searchQuery,
-    ));
+    final result = await getAssetsUseCase(
+      GetAssetsParams(
+        page: _currentPage,
+        perPage: _perPage,
+        status: _selectedStatus == AssetStatus.all ? null : _selectedStatus,
+        searchQuery: _searchQuery.isEmpty ? null : _searchQuery,
+      ),
+    );
 
     result.fold(
       (failure) {
@@ -139,10 +135,7 @@ class FixedAssetController extends ChangeNotifier {
 
   // ── Refresh ──────────────────────────────────────────────────────────────
   Future<void> refresh() async {
-    await Future.wait([
-      loadAssets(reset: true),
-      loadStatusCounts(),
-    ]);
+    await Future.wait([loadAssets(reset: true), loadStatusCounts()]);
   }
 
   @override

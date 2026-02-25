@@ -24,7 +24,10 @@ class FixedAssetRepositoryImpl implements FixedAssetRepository {
   }) async {
     try {
       final result = await remoteDataSource.getAssets(
-        page: page, perPage: perPage, status: status, searchQuery: searchQuery,
+        page: page,
+        perPage: perPage,
+        status: status,
+        searchQuery: searchQuery,
       );
       return Right(result);
     } on ServerException catch (e) {

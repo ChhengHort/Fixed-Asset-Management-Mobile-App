@@ -45,17 +45,97 @@ class FixedAssetModel extends FixedAsset {
   }
 
   // ── Mock data generator ──────────────────────────────────────────────────
-  static List<FixedAssetModel> mockList(int count, {AssetStatus? filterStatus}) {
-    final statuses = [AssetStatus.approve, AssetStatus.pending, AssetStatus.reject];
+  // static List<FixedAssetModel> mockList(int count, {AssetStatus? filterStatus}) {
+  //   final statuses = [AssetStatus.approve, AssetStatus.pending, AssetStatus.reject];
+  //   final all = List.generate(19, (i) {
+  //     final status = filterStatus ?? statuses[i % statuses.length];
+  //     return FixedAssetModel(
+  //       id: '${i + 1}',
+  //       name: 'MacBook Pro',
+  //       price: 1200,
+  //       code: 'UPGP-009-hello-2025-009-0000${i + 1}',
+  //       status: status,
+  //       imageUrl: null,
+  //     );
+  //   });
+  //   return all.take(count).toList();
+  // }
+  static List<FixedAssetModel> mockList(
+    int count, {
+    AssetStatus? filterStatus,
+  }) {
+    final statuses = [
+      AssetStatus.approve,
+      AssetStatus.pending,
+      AssetStatus.reject,
+    ];
+
+    const names = [
+      'MacBook Pro',
+      'Dell Monitor',
+      'iPhone 15',
+      'Office Chair',
+      'Standing Desk',
+      'iPad Pro',
+      'Canon Printer',
+      'Sony Headphones',
+      'Logitech Keyboard',
+      'Samsung TV',
+      'HP Laptop',
+      'Epson Projector',
+      'Cisco Router',
+      'WD Hard Drive',
+      'LG UltraWide Monitor',
+      'APC UPS',
+      'Raspberry Pi 5',
+      'Wacom Tablet',
+      'DJI Drone',
+    ];
+
+    const prices = [
+      1200.0,
+      350.0,
+      999.0,
+      450.0,
+      800.0,
+      1099.0,
+      280.0,
+      199.0,
+      89.0,
+      650.0,
+      750.0,
+      520.0,
+      310.0,
+      120.0,
+      480.0,
+      160.0,
+      80.0,
+      370.0,
+      1500.0,
+    ];
+
+    const imageUrls = [
+      'https://picsum.photos/seed/asset1/200/200',
+      'https://picsum.photos/seed/asset2/200/200',
+      'https://picsum.photos/seed/asset3/200/200',
+      'https://picsum.photos/seed/asset4/200/200',
+      'https://picsum.photos/seed/asset5/200/200',
+      'https://picsum.photos/seed/asset6/200/200',
+      'https://picsum.photos/seed/asset7/200/200',
+      'https://picsum.photos/seed/asset8/200/200',
+      'https://picsum.photos/seed/asset9/200/200',
+      null, // intentionally no image for some items
+    ];
+
     final all = List.generate(19, (i) {
       final status = filterStatus ?? statuses[i % statuses.length];
       return FixedAssetModel(
         id: '${i + 1}',
-        name: 'MacBook Pro',
-        price: 1200,
+        name: names[i % names.length],
+        price: prices[i % prices.length],
         code: 'UPGP-009-hello-2025-009-0000${i + 1}',
         status: status,
-        imageUrl: null,
+        imageUrl: imageUrls[i % imageUrls.length],
       );
     });
     return all.take(count).toList();
@@ -94,10 +174,10 @@ class AssetPaginationModel extends AssetPagination {
   }) {
     final all = FixedAssetModel.mockList(19);
     final filtered = all.where((a) {
-      final matchStatus = status == null ||
-          status == AssetStatus.all ||
-          a.status == status;
-      final matchQuery = query == null ||
+      final matchStatus =
+          status == null || status == AssetStatus.all || a.status == status;
+      final matchQuery =
+          query == null ||
           query.isEmpty ||
           a.name.toLowerCase().contains(query.toLowerCase()) ||
           a.code.toLowerCase().contains(query.toLowerCase());
