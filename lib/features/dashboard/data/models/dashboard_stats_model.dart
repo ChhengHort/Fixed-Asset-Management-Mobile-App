@@ -36,7 +36,7 @@ class DashboardStatsModel extends DashboardStats {
       expendableCount: 350,
       stationeryTotal: 12500,
       stationeryCount: 535,
-      totalExpense: 12500,
+      totalExpense: 7500,
       totalExpenseCount: 50,
       totalExpenseMonth: 'July',
     );
@@ -62,10 +62,30 @@ class AnalyticsDataModel extends AnalyticsData {
 
   static List<AnalyticsDataModel> mockData() {
     return [
-      const AnalyticsDataModel(month: 'Jan', fixedAsset: 37000, expendable: 38000, stationery: 29000),
-      const AnalyticsDataModel(month: 'Feb', fixedAsset: 28000, expendable: 47000, stationery: 38000),
-      const AnalyticsDataModel(month: 'Mar', fixedAsset: 28000, expendable: 38000, stationery: 29000),
-      const AnalyticsDataModel(month: 'Apr', fixedAsset: 38000, expendable: 38000, stationery: 44000),
+      const AnalyticsDataModel(
+        month: 'Jan',
+        fixedAsset: 37000,
+        expendable: 38000,
+        stationery: 29000,
+      ),
+      const AnalyticsDataModel(
+        month: 'Feb',
+        fixedAsset: 28000,
+        expendable: 47000,
+        stationery: 38000,
+      ),
+      const AnalyticsDataModel(
+        month: 'Mar',
+        fixedAsset: 28000,
+        expendable: 38000,
+        stationery: 29000,
+      ),
+      const AnalyticsDataModel(
+        month: 'Apr',
+        fixedAsset: 38000,
+        expendable: 38000,
+        stationery: 44000,
+      ),
     ];
   }
 }

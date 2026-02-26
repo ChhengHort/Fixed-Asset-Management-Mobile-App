@@ -116,11 +116,15 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
                         ? Image.network(avatarUrl!, fit: BoxFit.cover)
                         : Container(
                             color: Colors.white.withOpacity(0.3),
-                            child: const Icon(
-                              Icons.person,
-                              color: Colors.white,
-                              size: 20,
+                            child: const CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200',
+                              ),
                             ),
+                            // Icons.person,
+                            // color: Colors.white,
+                            // size: 20,
                           ),
                   ),
                 ),

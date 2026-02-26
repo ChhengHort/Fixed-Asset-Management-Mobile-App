@@ -13,7 +13,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<Map<String, dynamic>> login(String username, String password) async {
     // Simple mock login fallback so the app works without a backend for demo
     const mockUsername = 'manager';
-    const mockEmail = 'manager@example.com';
+    const mockEmail = 'manager@assettech.com';
     const mockPassword = 'Manager#123';
 
     if ((username == mockUsername || username == mockEmail) &&

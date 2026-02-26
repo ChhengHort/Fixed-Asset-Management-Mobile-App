@@ -15,20 +15,37 @@ class AppDrawer extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: const BoxDecoration(gradient: AppTheme.primaryGradient),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                // const CircleAvatar(
+                //   radius: 30,
+                //   backgroundColor: Colors.white30,
+                //   child: Icon(Icons.person, color: Colors.white, size: 30),
+                // ),
                 const CircleAvatar(
                   radius: 30,
-                  backgroundColor: Colors.white30,
-                  child: Icon(Icons.person, color: Colors.white, size: 30),
+                  backgroundImage: NetworkImage(
+                    'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200',
+                  ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(width: 8),
                 Consumer<AuthController>(
-                  builder: (_, auth, __) => Text(
-                    auth.user?.fullName ?? auth.user?.username ?? 'User',
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  builder: (_, auth, __) => RichText(
+                    text: TextSpan(
+                      text:
+                          auth.user?.fullName ??
+                          auth.user?.username ??
+                          'Chhenghort',
+                      style: const TextStyle(color: Colors.white, fontSize: 24),
+                      children: const [
+                        TextSpan(
+                          text: '\nView Profile',
+                          style: TextStyle(fontSize: 14, color: Colors.white70),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -64,7 +81,10 @@ class AppDrawer extends StatelessWidget {
             onTap: () async {
               await context.read<AuthController>().logout();
               if (context.mounted) {
-                Navigator.pushReplacementNamed(context, AppConstants.loginRoute);
+                Navigator.pushReplacementNamed(
+                  context,
+                  AppConstants.loginRoute,
+                );
               }
             },
           ),
