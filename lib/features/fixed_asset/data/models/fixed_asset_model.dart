@@ -45,21 +45,6 @@ class FixedAssetModel extends FixedAsset {
   }
 
   // ── Mock data generator ──────────────────────────────────────────────────
-  // static List<FixedAssetModel> mockList(int count, {AssetStatus? filterStatus}) {
-  //   final statuses = [AssetStatus.approve, AssetStatus.pending, AssetStatus.reject];
-  //   final all = List.generate(19, (i) {
-  //     final status = filterStatus ?? statuses[i % statuses.length];
-  //     return FixedAssetModel(
-  //       id: '${i + 1}',
-  //       name: 'MacBook Pro',
-  //       price: 1200,
-  //       code: 'UPGP-009-hello-2025-009-0000${i + 1}',
-  //       status: status,
-  //       imageUrl: null,
-  //     );
-  //   });
-  //   return all.take(count).toList();
-  // }
   static List<FixedAssetModel> mockList(
     int count, {
     AssetStatus? filterStatus,
@@ -115,16 +100,16 @@ class FixedAssetModel extends FixedAsset {
     ];
 
     const imageUrls = [
-      'https://picsum.photos/seed/asset1/200/200',
-      'https://picsum.photos/seed/asset2/200/200',
-      'https://picsum.photos/seed/asset3/200/200',
-      'https://picsum.photos/seed/asset4/200/200',
-      'https://picsum.photos/seed/asset5/200/200',
-      'https://picsum.photos/seed/asset6/200/200',
-      'https://picsum.photos/seed/asset7/200/200',
-      'https://picsum.photos/seed/asset8/200/200',
-      'https://picsum.photos/seed/asset9/200/200',
-      null, // intentionally no image for some items
+      'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200', // MacBook Pro
+      'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=200', // Dell Monitor
+      'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=200', // iPhone 15
+      'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=200', // Office Chair
+      'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=200', // Standing Desk
+      'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200', // iPad Pro
+      'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=200', // Canon Printer
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200', // Sony Headphones
+      'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=200', // Logitech Keyboard
+      null,
     ];
 
     final all = List.generate(19, (i) {
@@ -217,9 +202,9 @@ class AssetStatusCountModel extends AssetStatusCount {
 
   factory AssetStatusCountModel.mock() {
     return const AssetStatusCountModel(
-      approveCount: 12,
-      pendingCount: 5,
-      rejectCount: 2,
+      approveCount: 7,
+      pendingCount: 6,
+      rejectCount: 6,
     );
   }
 }

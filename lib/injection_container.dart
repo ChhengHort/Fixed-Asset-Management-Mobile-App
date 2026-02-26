@@ -191,8 +191,8 @@ Future<void> initDependencies() async {
   );
   sl.registerLazySingleton<AuthLocalDataSource>(
     () => AuthLocalDataSourceImpl(
-      sl<FlutterSecureStorage>(), // 1st param
-      sl<SharedPreferences>(), // 2nd param
+      sl<FlutterSecureStorage>(),
+      sl<SharedPreferences>(),
     ),
   );
 

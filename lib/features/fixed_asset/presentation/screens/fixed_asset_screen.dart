@@ -1,3 +1,5 @@
+import 'package:asset_tech/core/widgets/app_drawer.dart';
+import 'package:asset_tech/features/dashboard/presentation/screens/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -46,6 +48,7 @@ class _FixedAssetScreenState extends State<FixedAssetScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FA),
       appBar: const AppTopBar(notificationCount: 15),
+      drawer: const AppDrawer(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -57,7 +60,11 @@ class _FixedAssetScreenState extends State<FixedAssetScreen> {
                 Builder(
                   builder: (ctx) => GestureDetector(
                     onTap: () => Scaffold.of(ctx).openDrawer(),
-                    child: const Icon(Icons.menu, color: Colors.black87, size: 26),
+                    child: const Icon(
+                      Icons.menu,
+                      color: Colors.black87,
+                      size: 26,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 14),
@@ -120,9 +127,7 @@ class _FixedAssetScreenState extends State<FixedAssetScreen> {
                 }
 
                 if (controller.state == ListState.empty) {
-                  return _EmptyState(
-                    searchQuery: controller.searchQuery,
-                  );
+                  return _EmptyState(searchQuery: controller.searchQuery);
                 }
 
                 return RefreshIndicator(
@@ -132,7 +137,9 @@ class _FixedAssetScreenState extends State<FixedAssetScreen> {
                     controller: _scrollController,
                     padding: const EdgeInsets.only(top: 4, bottom: 16),
                     itemCount:
-                        controller.assets.length + (controller.isLoadingMore ? 1 : 0) + 1,
+                        controller.assets.length +
+                        (controller.isLoadingMore ? 1 : 0) +
+                        1,
                     itemBuilder: (ctx, i) {
                       // Footer: pagination info + load-more spinner
                       if (i == controller.assets.length) {
@@ -196,10 +203,7 @@ class _ListFooter extends StatelessWidget {
             controller.totalCount == 0
                 ? 'No entities found'
                 : 'Showing ${controller.fromCount} to ${controller.toCount} of ${controller.totalCount} entities',
-            style: const TextStyle(
-              color: Color(0xFF8A9BB0),
-              fontSize: 13,
-            ),
+            style: const TextStyle(color: Color(0xFF8A9BB0), fontSize: 13),
           ),
           if (controller.isLoadingMore)
             const Padding(
@@ -255,7 +259,11 @@ class _ErrorState extends StatelessWidget {
                 color: Colors.red.shade50,
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.error_outline, size: 48, color: Colors.red.shade400),
+              child: Icon(
+                Icons.error_outline,
+                size: 48,
+                color: Colors.red.shade400,
+              ),
             ),
             const SizedBox(height: 16),
             Text(

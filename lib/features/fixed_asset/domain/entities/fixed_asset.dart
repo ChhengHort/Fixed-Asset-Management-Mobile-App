@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum AssetStatus { all, approve, pending, reject }
+enum AssetStatus { all, approve, pending, reject, approved, rejected }
 
 extension AssetStatusExtension on AssetStatus {
   String get label {
@@ -13,6 +13,12 @@ extension AssetStatusExtension on AssetStatus {
         return 'Pending';
       case AssetStatus.reject:
         return 'Reject';
+      case AssetStatus.approved:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case AssetStatus.rejected:
+        // TODO: Handle this case.
+        throw UnimplementedError();
     }
   }
 

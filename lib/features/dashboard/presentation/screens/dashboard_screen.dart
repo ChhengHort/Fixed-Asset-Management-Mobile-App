@@ -1,3 +1,4 @@
+import 'package:asset_tech/core/widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -8,6 +9,8 @@ import '../controllers/dashboard_controller.dart';
 import '../widgets/analytics_chart.dart';
 import '../widgets/app_top_bar.dart';
 import '../widgets/stat_card.dart';
+
+// final GlobalKey<ScaffoldState> appScaffoldKey = GlobalKey<ScaffoldState>();
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -31,6 +34,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Scaffold(
       backgroundColor: AppTheme.scaffoldBackground,
+      drawer: const AppDrawer(),
       appBar: AppTopBar(
         notificationCount: 15,
         avatarUrl: authController.user?.avatarUrl,
@@ -41,7 +45,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Navigator.pushNamed(context, AppConstants.profileRoute);
         },
       ),
-      drawer: _buildDrawer(context),
       body: RefreshIndicator(
         color: AppTheme.primaryGreen,
         onRefresh: () => context.read<DashboardController>().refresh(),
