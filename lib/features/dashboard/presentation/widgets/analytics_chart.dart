@@ -155,7 +155,7 @@ class AnalyticsChart extends StatelessWidget {
                         BarChartRodData(
                           toY: d.fixedAsset,
                           color: AppTheme.primaryGreen,
-                          width: 8,
+                          width: 15,
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(4),
                             topRight: Radius.circular(4),
@@ -164,7 +164,7 @@ class AnalyticsChart extends StatelessWidget {
                         BarChartRodData(
                           toY: d.expendable,
                           color: AppTheme.accentYellow,
-                          width: 8,
+                          width: 15,
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(4),
                             topRight: Radius.circular(4),
@@ -173,7 +173,7 @@ class AnalyticsChart extends StatelessWidget {
                         BarChartRodData(
                           toY: d.stationery,
                           color: AppTheme.accentBlue,
-                          width: 8,
+                          width: 15,
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(4),
                             topRight: Radius.circular(4),

@@ -9,8 +9,8 @@ class AppTheme {
   static const Color lightGreen = Color(0xFF58D68D);
   static const Color gradientStart = Color(0xFF0D5051);
   static const Color gradientEnd = Color(0xFF93FD7D);
-  static const Color accentYellow = Color(0xFFF39C12);
-  static const Color accentBlue = Color(0xFF3498DB);
+  static const Color accentYellow = Color(0xFFffc300);
+  static const Color accentBlue = Color(0xFF42a5f5);
   static const Color accentRed = Color(0xFFE74C3C);
   static const Color textWhite = Color(0xFFFFFFFF);
   static const Color textGrey = Color(0xFF8A9BB0);

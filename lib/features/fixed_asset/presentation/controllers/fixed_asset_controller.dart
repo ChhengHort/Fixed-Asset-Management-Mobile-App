@@ -1,6 +1,8 @@
+
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import '../../../../core/utils/use_case.dart';
+import '../../data/models/fixed_asset_model.dart';
 import '../../domain/entities/fixed_asset.dart';
 import '../../domain/usecases/fixed_asset_usecases.dart';
 
@@ -138,9 +140,88 @@ class FixedAssetController extends ChangeNotifier {
     await Future.wait([loadAssets(reset: true), loadStatusCounts()]);
   }
 
+  // ── Find asset by id ─────────────────────────────────────────────────────
+  FixedAsset? findById(String id) {
+    try {
+      return _assets.firstWhere((a) => a.id == id);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  // ── Update single asset status ────────────────────────────────────────────
+  // Strategy:
+  //   1. Optimistically update the item in _assets so the detail screen
+  //      badge flips instantly (good UX, no visible delay).
+  //   2. Persist to the mock store so every future query reflects the change.
+  //   3. Reload the list for the active filter tab (so stale items disappear).
+  //   4. Reload status counts from the updated mock store (accurate numbers).
+  Future<void> updateAssetStatus(String assetId, AssetStatus newStatus) async {
+    // ── Step 1: optimistic local update ─────────────────────────────────
+    final index = _assets.indexWhere((a) => a.id == assetId);
+    if (index != -1) {
+      final old = _assets[index];
+      _assets[index] = FixedAssetModel(
+        id: old.id,
+        name: old.name,
+        price: old.price,
+        code: old.code,
+        status: newStatus,
+        imageUrl: old.imageUrl,
+        category: old.category,
+        description: old.description,
+        purchaseDate: old.purchaseDate,
+        location: old.location,
+      );
+      notifyListeners(); // detail screen badge flips immediately
+    }
+
+    // ── Step 2: persist to mock store ────────────────────────────────────
+    // Replace with your real API call here, e.g.:
+    //   await updateAssetUseCase(UpdateAssetParams(id: assetId, status: newStatus));
+    await _persistStatusToMock(assetId, newStatus);
+
+    // ── Step 3 + 4: reload list AND counts from the updated source ───────
+    // This is the only reliable way to get correct counts and a correctly
+    // filtered list — calculating from stale in-memory data always drifts.
+    await Future.wait([loadAssets(reset: true), loadStatusCounts()]);
+  }
+
+  // ── Persist status change into the mock store ─────────────────────────────
+  // FixedAssetModel.mockList() generates fresh data each call, so we keep a
+  // simple in-memory override map that GetAssetsUseCase / mock repository
+  // must consult. If you already have a real API, delete this entire method.
+  Future<void> _persistStatusToMock(
+    String assetId,
+    AssetStatus newStatus,
+  ) async {
+    // Simulate network latency
+    await Future.delayed(const Duration(milliseconds: 300));
+    // Write into the shared mock override store
+    MockAssetStore.overrideStatus(assetId, newStatus);
+  }
+
   @override
   void dispose() {
     _debounce?.cancel();
     super.dispose();
   }
+}
+
+// ── MockAssetStore ─────────────────────────────────────────────────────────────
+// A simple singleton that holds status overrides so mock data stays consistent
+// across paginated queries after an approve/reject action.
+// Delete this class once you connect a real API.
+class MockAssetStore {
+  MockAssetStore._();
+
+  static final Map<String, AssetStatus> _overrides = {};
+
+  static void overrideStatus(String id, AssetStatus status) {
+    _overrides[id] = status;
+  }
+
+  static AssetStatus? getOverride(String id) => _overrides[id];
+
+  static void clear() => _overrides.clear();
 }

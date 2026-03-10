@@ -19,16 +19,9 @@ class AppDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                // const CircleAvatar(
-                //   radius: 30,
-                //   backgroundColor: Colors.white30,
-                //   child: Icon(Icons.person, color: Colors.white, size: 30),
-                // ),
                 const CircleAvatar(
                   radius: 30,
-                  backgroundImage: NetworkImage(
-                    'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200',
-                  ),
+                  backgroundImage: AssetImage('assets/images/myPF.jpg'),
                 ),
                 const SizedBox(width: 8),
                 Consumer<AuthController>(
@@ -37,8 +30,12 @@ class AppDrawer extends StatelessWidget {
                       text:
                           auth.user?.fullName ??
                           auth.user?.username ??
-                          'Chhenghort',
-                      style: const TextStyle(color: Colors.white, fontSize: 24),
+                          'Eang Chhenghort',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 24,
+                      ),
                       children: const [
                         TextSpan(
                           text: '\nView Profile',

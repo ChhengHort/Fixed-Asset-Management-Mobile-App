@@ -10,8 +10,6 @@ import '../widgets/analytics_chart.dart';
 import '../widgets/app_top_bar.dart';
 import '../widgets/stat_card.dart';
 
-// final GlobalKey<ScaffoldState> appScaffoldKey = GlobalKey<ScaffoldState>();
-
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 

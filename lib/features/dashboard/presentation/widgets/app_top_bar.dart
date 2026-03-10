@@ -94,6 +94,7 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
                     final controller = context.read<AuthController>();
                     await controller.logout();
                     Navigator.pushNamedAndRemoveUntil(
+                      // ignore: use_build_context_synchronously
                       context,
                       AppConstants.loginRoute,
                       (r) => false,
@@ -115,11 +116,12 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
                     child: avatarUrl != null
                         ? Image.network(avatarUrl!, fit: BoxFit.cover)
                         : Container(
+                            // ignore: deprecated_member_use
                             color: Colors.white.withOpacity(0.3),
                             child: const CircleAvatar(
                               radius: 30,
-                              backgroundImage: NetworkImage(
-                                'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200',
+                              backgroundImage: AssetImage(
+                                'assets/images/myPF.jpg',
                               ),
                             ),
                             // Icons.person,

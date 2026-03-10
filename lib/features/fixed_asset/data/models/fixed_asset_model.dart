@@ -1,4 +1,8 @@
 import '../../domain/entities/fixed_asset.dart';
+// Import the controller file that contains MockAssetStore.
+// Adjust the path if your project structure differs.
+import '../../presentation/controllers/fixed_asset_controller.dart'
+    show MockAssetStore;
 
 class FixedAssetModel extends FixedAsset {
   const FixedAssetModel({
@@ -100,22 +104,28 @@ class FixedAssetModel extends FixedAsset {
     ];
 
     const imageUrls = [
-      'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200', // MacBook Pro
-      'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=200', // Dell Monitor
-      'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=200', // iPhone 15
-      'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=200', // Office Chair
-      'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=200', // Standing Desk
-      'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200', // iPad Pro
-      'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=200', // Canon Printer
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200', // Sony Headphones
-      'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=200', // Logitech Keyboard
+      'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200',
+      'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=200',
+      'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=200',
+      'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=200',
+      'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=200',
+      'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200',
+      'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=200',
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200',
+      'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=200',
       null,
     ];
 
     final all = List.generate(19, (i) {
-      final status = filterStatus ?? statuses[i % statuses.length];
+      final id = '${i + 1}';
+
+      // ✅ Check MockAssetStore first — honours any approve/reject done this session
+      final overriddenStatus = MockAssetStore.getOverride(id);
+      final defaultStatus = filterStatus ?? statuses[i % statuses.length];
+      final status = overriddenStatus ?? defaultStatus;
+
       return FixedAssetModel(
-        id: '${i + 1}',
+        id: id,
         name: names[i % names.length],
         price: prices[i % prices.length],
         code: 'UPGP-009-hello-2025-009-0000${i + 1}',
@@ -123,6 +133,7 @@ class FixedAssetModel extends FixedAsset {
         imageUrl: imageUrls[i % imageUrls.length],
       );
     });
+
     return all.take(count).toList();
   }
 }
@@ -157,7 +168,9 @@ class AssetPaginationModel extends AssetPagination {
     AssetStatus? status,
     String? query,
   }) {
+    // ✅ Always regenerate from mockList so overrides from MockAssetStore are applied
     final all = FixedAssetModel.mockList(19);
+
     final filtered = all.where((a) {
       final matchStatus =
           status == null || status == AssetStatus.all || a.status == status;
@@ -201,10 +214,12 @@ class AssetStatusCountModel extends AssetStatusCount {
   }
 
   factory AssetStatusCountModel.mock() {
-    return const AssetStatusCountModel(
-      approveCount: 7,
-      pendingCount: 6,
-      rejectCount: 6,
+    // ✅ Count from the full mock list respecting all overrides
+    final all = FixedAssetModel.mockList(19);
+    return AssetStatusCountModel(
+      approveCount: all.where((a) => a.status == AssetStatus.approve).length,
+      pendingCount: all.where((a) => a.status == AssetStatus.pending).length,
+      rejectCount: all.where((a) => a.status == AssetStatus.reject).length,
     );
   }
 }

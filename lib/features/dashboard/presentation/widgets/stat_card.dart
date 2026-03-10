@@ -29,7 +29,6 @@ class StatCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        // border: Border.all(color: AppTheme.borderColor),
         border: Border(left: BorderSide(color: dotColor, width: 5)),
         boxShadow: [
           BoxShadow(
@@ -63,7 +62,7 @@ class StatCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 15),
           Text(
             title,
             style: const TextStyle(color: AppTheme.textGrey, fontSize: 12),
@@ -89,6 +88,7 @@ class StatCard extends StatelessWidget {
                     vertical: 3,
                   ),
                   decoration: BoxDecoration(
+                    // ignore: deprecated_member_use
                     color: (badgeColor ?? AppTheme.primaryGreen).withOpacity(
                       0.15,
                     ),
@@ -110,6 +110,7 @@ class StatCard extends StatelessWidget {
                     vertical: 3,
                   ),
                   decoration: BoxDecoration(
+                    // ignore: deprecated_member_use
                     color: dotColor.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(20),
                   ),

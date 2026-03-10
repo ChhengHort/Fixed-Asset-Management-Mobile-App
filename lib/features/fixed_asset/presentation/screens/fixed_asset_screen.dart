@@ -1,5 +1,4 @@
 import 'package:asset_tech/core/widgets/app_drawer.dart';
-import 'package:asset_tech/features/dashboard/presentation/screens/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -9,7 +8,7 @@ import '../controllers/fixed_asset_controller.dart';
 import '../widgets/asset_list_item.dart';
 import '../widgets/filter_tab_bar.dart';
 import '../widgets/search_bar_widget.dart';
-import 'asset_detail_screen.dart';
+import 'fixed_asset_detail_screen.dart';
 
 class FixedAssetScreen extends StatefulWidget {
   const FixedAssetScreen({super.key});
@@ -41,6 +40,24 @@ class _FixedAssetScreenState extends State<FixedAssetScreen> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void _navigateToDetail(
+    BuildContext context,
+    FixedAssetController controller,
+    int index,
+  ) {
+    // ✅ Always read the asset fresh from controller at tap time — never use a captured snapshot
+    final asset = controller.assets[index];
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ChangeNotifierProvider.value(
+          value: controller,
+          child: FixedAssetDetailScreen(asset: asset),
+        ),
+      ),
+    );
   }
 
   @override
@@ -141,7 +158,7 @@ class _FixedAssetScreenState extends State<FixedAssetScreen> {
                         (controller.isLoadingMore ? 1 : 0) +
                         1,
                     itemBuilder: (ctx, i) {
-                      // Footer: pagination info + load-more spinner
+                      // Footer: pagination info
                       if (i == controller.assets.length) {
                         return _ListFooter(controller: controller);
                       }
@@ -163,18 +180,11 @@ class _FixedAssetScreenState extends State<FixedAssetScreen> {
                         );
                       }
 
+                      // ✅ Read directly from controller.assets[i] — always live
                       final asset = controller.assets[i];
                       return AssetListItem(
                         asset: asset,
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ChangeNotifierProvider.value(
-                              value: controller,
-                              child: AssetDetailScreen(asset: asset),
-                            ),
-                          ),
-                        ),
+                        onTap: () => _navigateToDetail(context, controller, i),
                       );
                     },
                   ),
@@ -307,8 +317,8 @@ class _EmptyState extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF0FAF4),
+              decoration: const BoxDecoration(
+                color: Color(0xFFF0FAF4),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
