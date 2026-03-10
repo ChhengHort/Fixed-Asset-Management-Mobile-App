@@ -1,0 +1,14 @@
+# analysis_options.yaml
+
+linter:
+  rules:
+    - always_declare_return_types
+    - always_specify_types
+    - annotate_overrides
+    - avoid_print
+    - prefer_final_fields
+    - public_member_api_docs
+    - sort_constructors_first
+    - sort_pub_dependencies
+    - unnecessary_new
+    - use_key_in_widget_constructors

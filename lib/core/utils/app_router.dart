@@ -1,68 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../injection_container.dart';
 import '../constants/app_constants.dart';
-import '../../features/auth/presentation/controllers/auth_controller.dart';
-import '../../features/auth/presentation/screens/login_screen.dart';
-import '../../features/auth/presentation/screens/splash_screen.dart';
-import '../../features/dashboard/presentation/controllers/dashboard_controller.dart';
-import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
-import '../../features/fixed_asset/presentation/controllers/fixed_asset_controller.dart';
+import '../../features/auth/providers/mock_auth_provider.dart';
+import '../../features/auth/screens/mock_login_screen.dart';
 import '../../features/fixed_asset/presentation/screens/fixed_asset_screen.dart';
+import '../../features/fixed_asset/presentation/screens/fixed_asset_detail_mock_screen.dart';
 
 class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case AppConstants.splashRoute:
-        return MaterialPageRoute(
-          builder: (_) => ChangeNotifierProvider(
-            create: (_) => sl<AuthController>(),
-            child: const SplashScreen(),
-          ),
-        );
+      case '/login':
+        return _fadeRoute(settings, const MockLoginScreen());
 
-      case AppConstants.loginRoute:
-        return _fadeRoute(
-          settings,
-          ChangeNotifierProvider(
-            create: (_) => sl<AuthController>(),
-            child: const LoginScreen(),
-          ),
-        );
-
-      case AppConstants.dashboardRoute:
+      case '/assets':
         return _slideRoute(
           settings,
-          MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (_) => sl<AuthController>()),
-              ChangeNotifierProvider(create: (_) => sl<DashboardController>()),
-            ],
-            child: const DashboardScreen(),
-          ),
+          _buildProtectedRoute(builder: (_) => const FixedAssetMockScreen()),
         );
 
-      case AppConstants.assetsRoute:
+      case '/asset-detail':
+        final asset = settings.arguments;
         return _slideRoute(
           settings,
-          MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (_) => sl<AuthController>()),
-              ChangeNotifierProvider(create: (_) => sl<FixedAssetController>()),
-            ],
-            child: const FixedAssetScreen(),
+          _buildProtectedRoute(
+            builder: (_) => FixedAssetDetailMockScreen(asset: asset),
           ),
         );
 
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
-            body: Center(
-              child: Text('No route defined for ${settings.name}'),
-            ),
+            body: Center(child: Text('No route defined for ${settings.name}')),
           ),
         );
     }
+  }
+
+  /// Wraps a widget to check authentication before displaying
+  static Widget _buildProtectedRoute({required WidgetBuilder builder}) {
+    return Consumer<MockAuthProvider>(
+      builder: (context, authProvider, _) {
+        if (!authProvider.isAuthenticated) {
+          return const MockLoginScreen();
+        }
+        return builder(context);
+      },
+    );
   }
 
   static PageRouteBuilder _fadeRoute(RouteSettings s, Widget child) {

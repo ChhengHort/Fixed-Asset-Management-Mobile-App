@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'core/constants/app_constants.dart';
+import 'package:provider/provider.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/app_router.dart';
+import 'features/auth/providers/mock_auth_provider.dart';
 import 'injection_container.dart';
 
 void main() async {
@@ -33,12 +34,15 @@ class AssetTechApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Asset Tech',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      initialRoute: AppConstants.splashRoute,
-      onGenerateRoute: AppRouter.onGenerateRoute,
+    return ChangeNotifierProvider(
+      create: (_) => MockAuthProvider(),
+      child: MaterialApp(
+        title: 'Asset Tech',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        initialRoute: '/login',
+        onGenerateRoute: AppRouter.onGenerateRoute,
+      ),
     );
   }
 }

@@ -1,0 +1,22 @@
+name: assets_approval_app
+description: A mobile application for managing asset approvals.
+publish_to: 'none' 
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/  # Add your asset images here if needed
+    - assets/icons/    # Add your asset icons here if needed
